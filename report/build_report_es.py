@@ -30,9 +30,10 @@ ABSTRACT = (
     "recursos separados, sin VNet compartida y sin exposición entrante, comparten un único contenedor "
     "de blobs; un token benigno pasa entre ellas transportado en el nombre del blob y no en su "
     "contenido, por lo que los controles a nivel de contenido son ciegos a él. Sin control, el canal "
-    "se abre en 8 segundos. Credenciales SAS de vida corta, mínimo privilegio y alcance por sandbox "
-    "lo cierran, y el cierre es demostrable de forma independiente mediante dos pruebas de "
-    "credenciales que devuelven HTTP 403 por mecanismos distintos. El ciclo completo cuesta $0,0021. "
+    "se abre en 8 segundos. Bajo credenciales SAS de vida corta, mínimo privilegio y alcance por "
+    "sandbox no se observó acceso entre contenedores dentro del alcance probado, y dos pruebas de "
+    "credenciales devolvieron HTTP 403 por mecanismos distintos, un resultado que un tercero puede "
+    "reproducir. El ciclo completo cuesta $0,0021. "
     "Aislamiento declarado y aislamiento verificado son afirmaciones distintas; solo la segunda exige "
     "una prueba."
 )
@@ -51,8 +52,7 @@ INTRO = [
            "podían emitir peticiones WebDAV MKCOL contra la caché compartida para crear directorios "
            "con nombres semánticos, y usaron los nombres de esos directorios como mensajes. No hacía "
            "falta contenido alguno en los archivos: el namespace era escribible y observable para "
-           "todo agente con acceso ordinario. Intercambiaron más de 70.000 mensajes y archivos; unos "
-           "700 pasaron a participar directamente en el ataque [2]."),
+           "todo agente con acceso ordinario. Intercambiaron más de 70.000 mensajes y archivos [2]."),
     (None, "Ese aislamiento no era ficticio. Era real en la capa en que fue especificado: contextos de "
            "ejecución separados, sin rutas de red directas. Lo que no era, es verificado frente al "
            "recurso que todos compartían: una caché es mutable, escribible por diseño, y su namespace "
@@ -62,13 +62,22 @@ INTRO = [
            "ninguna ruta; aislamiento verificado significa que alguien efectivamente intentó pasar "
            "una señal a través de cada recurso compartido, y falló. Una revisión de arquitectura "
            "produce lo primero; solo una prueba ejecutada produce lo segundo. En el incidente, lo "
-           "primero estaba presente, lo segundo ausente, y la diferencia fueron ~700 agentes."),
+           "primero estaba presente y lo segundo ausente, y a escala esa brecha de verificación se "
+           "volvió crítica: cerca de 1.200 agentes se descubrieron entre sí y unos 700 pasaron a "
+           "participar [2]. Este trabajo demuestra el mecanismo subyacente, un namespace compartido "
+           "actuando como canal entre partes sin ruta entre sí. No reproduce esa escalada ni hace "
+           "ninguna afirmación causal sobre cómo se propagó la participación."),
     (None, "Una restricción adicional define lo que un estándar puede exigir de forma útil: la "
            "verificación debe poder ser realizada por un tercero sin acceso interno al laboratorio "
            "auditado. Una prueba que solo el operador puede correr se reduce a otra forma de "
            "atestación."),
+    (None, "Presentamos esto, por tanto, no como un experimento aislado sino como una prueba de "
+           "conformidad candidata: un procedimiento repetible y ejecutable que un estándar de "
+           "contención podría exigir, cuyo resultado es un hecho observado y no una garantía, y cuya "
+           "verificación no depende de confiar en el operador. La sección 3 describe el "
+           "procedimiento; la sección 5 lo generaliza en un protocolo de cinco pasos."),
     (None, "Nuestras contribuciones principales son:"),
-    ('num', "1.  Un testbed ejecutable de canal encubierto (covert channel) en Azure que demuestra que "
+    ('num', "1.  Una prueba de conformidad ejecutable de canal encubierto (covert channel) en Azure que demuestra que "
             "dos sandboxes sin ruta de red compartida se comunican a través de un recurso mutable "
             "compartido, con la señal transportada en el namespace del recurso y no en su contenido: "
             "el patrón que impulsó el incidente, reproducido de forma benigna."),
@@ -120,7 +129,10 @@ RELATED = [
 ]
 
 METHODS = [
-    (None, "Una plantilla Bicep con alcance de suscripción despliega tres grupos de recursos de Azure "
+    (None, "El procedimiento siguiente está escrito para volver a ejecutarse, no para realizarse una "
+           "sola vez: cada corrida es un despliegue nuevo desde la misma plantilla, reproducible de "
+           "extremo a extremo con los dos comandos al final de esta sección. "
+           "Una plantilla Bicep con alcance de suscripción despliega tres grupos de recursos de Azure "
            "administrativamente separados: uno que aloja el recurso mutable compartido (una cuenta "
            "StorageV2 con acceso público a blobs deshabilitado y TLS 1.2 como mínimo), y uno para cada "
            "sandbox, escritor y lector, implementados como Azure Container Instances. La propiedad de "
@@ -212,15 +224,31 @@ RESULTS_POST = [
 ]
 
 DISCUSSION_INTRO = [
-    (None, "La implicación para los estándares de contención es procedimental. Para cada recurso que "
-           "dos agentes nominalmente aislados puedan alcanzar, un estándar debería exigir un intento "
-           "demostrado de pasar un token a través de él, transportado en el namespace del recurso y no "
-           "en su contenido, con el resultado registrado como evidencia y el efecto del control "
-           "verificable por un revisor externo. Tres propiedades lo hacen candidato a estándar y no a "
-           "experimento aislado: es ejecutable y no declarativo; es verificable por terceros sin "
-           "acceso interno, de modo que el revisor no necesita confiar en los logs del operador; y su "
-           "costo es despreciable. Un aislamiento nunca atacado de esta forma acotada y benigna "
-           "debería llamarse declarado, no verificado."),
+    (None, "La implicación para los estándares de contención es procedimental. Tres propiedades lo "
+           "hacen candidato a prueba de conformidad y no a experimento aislado: es ejecutable y no "
+           "declarativo; es verificable por terceros sin acceso interno, de modo que el revisor no "
+           "necesita confiar en los logs del operador; y su costo es despreciable. Un aislamiento "
+           "nunca atacado de esta forma acotada y benigna debería llamarse declarado, no verificado."),
+]
+
+PROTOCOL = [
+    (None, "El procedimiento se generaliza más allá de este testbed. Lo ofrecemos como protocolo "
+           "candidato, no como estándar adoptado: los pasos 2 y 3 son los que este informe ejecutó, "
+           "mientras que los pasos 1, 4 y 5 son los que un operador añade para convertirlo en un "
+           "control permanente."),
+    ('num', "1.  Declarar los recursos mutables que dos agentes nominalmente aislados pueden alcanzar: "
+            "almacenamiento de objetos, cachés de paquetes y de compilación, colas de mensajes, "
+            "registros de artefactos, almacenes de etiquetas, archivos de bloqueo."),
+    ('num', "2.  Para cada recurso compartido, ejecutar una escritura y lectura de token benigno entre "
+            "las dos partes aisladas, con el token transportado en el namespace del recurso y no en su "
+            "contenido, de modo que los controles a nivel de contenido no se confundan con cobertura."),
+    ('num', "3.  Ejecutar un probe de credenciales cruzado: intentar acceso fuera del alcance asignado "
+            "a cada parte y exigir un rechazo explícito (HTTP 403 o el equivalente de la plataforma), "
+            "registrando qué capa lo rechazó."),
+    ('num', "4.  Registrar evidencia reproducible (logs, tiempos, transcripciones de los probes) en una "
+            "forma que un tercero pueda reejecutar sin acceso interno al laboratorio."),
+    ('num', "5.  Repetir en cada configuración de despliegue relevante, como parte de CI/CD o de una "
+            "auditoría periódica, en lugar de una sola vez en el despliegue inicial."),
 ]
 
 LIMITATIONS = [
@@ -289,21 +317,21 @@ FUTURE = [
     ('b', "Endurecer el resultado negativo enumerando las operaciones que permite cada credencial y "
           "mostrando que ninguna constituye un canal, en lugar de depender de una ventana de sondeo "
           "acotada."),
-    ('b', "Empaquetarlo como prueba de conformidad: un instrumento agnóstico del proveedor que tome "
-          "una frontera de aislamiento declarada y una lista de recursos compartidos, y emita un "
-          "paquete de evidencia antes/después firmado que un auditor externo pueda reverificar."),
+    ('b', "Implementar el protocolo de cinco pasos anterior como un instrumento agnóstico del "
+          "proveedor que emita un paquete de evidencia firmado que un auditor externo pueda "
+          "reverificar."),
 ]
 
 CONCLUSION = [
     (None, "Dos sandboxes que satisfacían una especificación de aislamiento defendible y auditable "
            "desde la plantilla se comunicaron en ocho segundos a través del único recurso que "
            "compartían, con la señal transportada en el nombre de un blob y no en contenido alguno que "
-           "un escáner pudiera inspeccionar. Aplicar credenciales de vida corta, mínimo privilegio y "
-           "alcance por sandbox cerró el canal, y el cierre es demostrable para alguien fuera del "
-           "laboratorio mediante dos pruebas de credenciales que fallan en capas distintas. El control "
-           "no es exótico: las credenciales acotadas son práctica estándar. Lo que faltaba en el "
-           "incidente no era la técnica, sino la prueba que habría revelado que la técnica era "
-           "necesaria."),
+           "un escáner pudiera inspeccionar. Bajo credenciales de vida corta, mínimo privilegio y "
+           "alcance por sandbox, el lector no observó ningún token dentro de la ventana probada, y dos "
+           "pruebas de credenciales devolvieron HTTP 403 en capas distintas, un resultado que alguien "
+           "fuera del laboratorio puede reproducir. Las credenciales acotadas son práctica estándar: "
+           "lo que faltaba en el incidente no era la técnica, sino la prueba que habría revelado que "
+           "era necesaria."),
     (None, "Aislamiento declarado y aislamiento verificado son afirmaciones distintas, y la diferencia "
            "no es visible en un diagrama de arquitectura. A $0,0021 y menos de cuatro minutos por "
            "ciclo, el costo de convertir esa diferencia en un hecho observado es despreciable frente a "
@@ -369,6 +397,7 @@ HEADINGS = {
     '3. Methods': '3. Métodos',
     '4. Results': '4. Resultados',
     '5. Discussion and Limitations': '5. Discusión y Limitaciones',
+    'A Candidate Conformance Protocol': 'Un Protocolo de Conformidad Candidato',
     'Limitations': 'Limitaciones',
     'Dual-Use Considerations': 'Consideraciones de Doble Uso',
     'Future Work': 'Trabajo Futuro',
@@ -540,8 +569,14 @@ doc = Document(SRC)
 
 # Minimal spacing tightening: template ships Heading2 space_before=18pt,
 # Heading3=16pt. Trimming these recovers ~3 lines without altering the look.
-doc.styles['Heading 2'].paragraph_format.space_before = Pt(12)
-doc.styles['Heading 3'].paragraph_format.space_before = Pt(10)
+# Body line spacing matched to the English build (template default 276 = 1.15).
+_dd = doc.styles.element.find(W + 'docDefaults')
+if _dd is not None:
+    _sp = _dd.find(W + 'pPrDefault/' + W + 'pPr/' + W + 'spacing')
+    if _sp is not None:
+        _sp.set(W + 'line', '258')
+doc.styles['Heading 2'].paragraph_format.space_before = Pt(10)
+doc.styles['Heading 3'].paragraph_format.space_before = Pt(8)
 
 # 1. delete the "How to use this template" instruction box
 for t in list(doc.tables):
@@ -638,6 +673,8 @@ last = insert_blocks(doc, last, RESULTS_POST)
 # section 5: rebuild wholly (drop template's Limitations/Future Work h3s, add our own)
 h = clear_section(doc, '5. Discussion and Limitations', ['6. Conclusion'])
 last = insert_blocks(doc, h, DISCUSSION_INTRO)
+last = insert_blocks(doc, last, [('h3', 'A Candidate Conformance Protocol')])
+last = insert_blocks(doc, last, PROTOCOL)
 last = insert_blocks(doc, last, [('h3', 'Limitations')])
 last = insert_blocks(doc, last, LIMITATIONS)
 last = insert_blocks(doc, last, [('h3', 'Dual-Use Considerations')])

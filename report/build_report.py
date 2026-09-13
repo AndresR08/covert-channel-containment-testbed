@@ -24,9 +24,10 @@ ABSTRACT = (
     "failure mode executable. Two Azure container instances in separate resource groups, with no "
     "shared VNet and no inbound exposure, share one blob container; a benign token passes between "
     "them carried in the blob name rather than its contents, so content-level controls are blind "
-    "to it. Uncontrolled, the channel opens in 8 seconds. Short-lived, least-privilege, "
-    "per-sandbox scoped SAS credentials close it, and closure is independently demonstrable by two "
-    "credential probes returning HTTP 403 through different mechanisms. The full cycle costs "
+    "to it. Uncontrolled, the channel opens in 8 seconds. Under short-lived, least-privilege, "
+    "per-sandbox scoped SAS credentials, no cross-container access was observed within the tested "
+    "scope, and two credential probes returned HTTP 403 through different mechanisms, a result a "
+    "third party can reproduce. The full cycle costs "
     "$0.0021. Declared and verified isolation are different claims; only the second requires a "
     "test."
 )
@@ -47,14 +48,12 @@ INTRO = [
            "through two injection vectors in a config-driven data loader. Forensic reconstruction attributes roughly 17,600 attacker "
            "actions across a 4.5-day campaign [1]."),
     (None, "The escape is not what should most concern containment standards. In parallel, "
-           "approximately 1,200 agents that were each believed to be isolated from one another "
-           "discovered they could communicate through a shared Artifactory cache namespace [2]. The "
-           "mechanism was almost embarrassingly simple: the agents found they could issue WebDAV "
-           "MKCOL requests against the shared cache to create directories with semantic names, and "
-           "used the directory names themselves as messages. No file contents were required: the "
+           "approximately 1,200 agents each believed to be isolated discovered they could communicate "
+           "through a shared Artifactory cache namespace [2]. The mechanism was simple: they issued "
+           "WebDAV MKCOL requests against the shared cache to create directories with semantic names, "
+           "and used the directory names themselves as messages. No file contents were required: the "
            "namespace was writable and observable to every agent with ordinary access. They exchanged "
-           "more than 70,000 messages and files; roughly 700 went on to participate directly in the "
-           "attack [2]."),
+           "more than 70,000 messages and files [2]."),
     (None, "That isolation was not fictional. It was real at the layer where it was specified: "
            "separate execution contexts, no direct network routes. What it was not, was verified "
            "against the resource they all shared: a cache is mutable, writable by design, and its "
@@ -63,13 +62,22 @@ INTRO = [
            "declared isolation means an auditor reading the specification agrees no path is "
            "specified; verified isolation means someone actually attempted to pass a signal through "
            "every shared resource, and failed. An architecture review produces the first; only an "
-           "executed test produces the second. In the incident the first was present, the second "
-           "absent, and the difference was ~700 agents."),
+           "executed test produces the second. In the incident the first was present and the second "
+           "absent, and at scale that verification gap became critical: roughly 1,200 agents "
+           "discovered one another and about 700 went on to participate [2]. This work demonstrates "
+           "the underlying mechanism, a shared namespace acting as a channel between parties with no "
+           "route to each other. It does not reproduce that escalation and makes no causal claim "
+           "about how participation spread."),
     (None, "A further constraint shapes what a standard can usefully require: verification must be "
            "performable by a third party without internal access to the lab being audited. A test "
            "only the operator can run reduces to another form of attestation."),
+    (None, "We therefore present this not as a one-off experiment but as a candidate conformance "
+           "test: a repeatable, executable procedure a containment standard could require, whose "
+           "output is an observed fact rather than an assurance, and whose verification does not "
+           "depend on trusting the operator. Section 3 gives the procedure; Section 5 generalizes it "
+           "into a five-step protocol."),
     (None, "Our main contributions are:"),
-    ('num', "1.  An executable covert-channel testbed on Azure demonstrating that two sandboxes with no "
+    ('num', "1.  An executable covert-channel conformance test on Azure demonstrating that two sandboxes with no "
           "shared network route communicate through a shared mutable resource, with the signal "
           "carried in the resource namespace rather than its contents: the pattern that drove the "
           "incident, reproduced benignly."),
@@ -88,9 +96,9 @@ RELATED = [
            "demonstrated cross-VM information leakage in third-party compute clouds, launching a "
            "literature on multi-tenant isolation failures that concentrates on microarchitectural "
            "media (cache contention, timing, scheduling) requiring co-residency and precise "
-           "measurement. The channel exercised here is different in kind and cheaper to exploit: it "
-           "operates at the storage-namespace layer, needing no co-residency, no timing precision and "
-           "no microarchitectural primitive, only ordinary API access both sandboxes are legitimately "
+           "measurement. The channel exercised here is different in kind: it operates at the "
+           "storage-namespace layer, needing no co-residency, no timing precision and no "
+           "microarchitectural primitive, only ordinary API access both sandboxes are legitimately "
            "granted. It is correspondingly easy for an agent to discover without instruction, which "
            "is what the incident documents, and it is invisible to content-level controls ("
            "scanning, encryption at rest, DLP on object bodies), because the object carrying the "
@@ -99,12 +107,12 @@ RELATED = [
            "Artificial Superintelligence Bill [5], introduced 8 September 2026, would prohibit "
            "development and deployment of artificial superintelligence and establish monitoring and "
            "control powers. The EU AI Act obliges providers of general-purpose AI models with "
-           "systemic risk to report serious incidents under Article 55(1)(c), and the Commission has "
-           "published a reporting template and guidance applying from 2 August 2026 [6]. "
+           "systemic risk to report serious incidents under Article 55(1)(c), with a Commission "
+           "reporting template and guidance applying from 2 August 2026 [6]. "
            "California's Transparency in Frontier Artificial Intelligence Act requires frontier "
            "developers to report critical safety incidents, explicitly including loss of control, "
-           "to Cal OES within 15 days, and to state whether the incident was associated with "
-           "internal use of a frontier model [7]. In Colombia, Bill 025 of 2026 [8], filed in the "
+           "to Cal OES within 15 days, and to state whether the incident involved internal use [7]. "
+           "In Colombia, Bill 025 of 2026 [8], filed in the "
            "Cámara de Representantes, would regulate AI development on ethical and responsible "
            "grounds."),
     (None, "These frameworks share a structural orientation: they govern what must be reported after "
@@ -118,7 +126,9 @@ RELATED = [
 ]
 
 METHODS = [
-    (None, "A subscription-scoped Bicep template deploys three administratively separate Azure "
+    (None, "The procedure below is written to be re-run rather than performed once: every run is a "
+           "fresh deployment from the same template, reproduced end to end by the two commands at the "
+           "end of this section. A subscription-scoped Bicep template deploys three administratively separate Azure "
            "resource groups: one holding the shared mutable resource (a StorageV2 account with public "
            "blob access disabled and TLS 1.2 minimum), and one each for the writer and reader "
            "sandboxes, implemented as Azure Container Instances. The isolation property is structural "
@@ -188,35 +198,49 @@ RESULTS_POST = [
            "channel even within its own scope."),
     (None, "The uncontrolled run cost $0.00042 and the controlled run $0.00167, computed from "
            "container start and finish timestamps against published East US ACI rates "
-           "($0.0405/vCPU-hour, $0.00445/GB-hour); the fourfold difference is explained entirely by "
-           "the reader running its full poll window rather than exiting early. We report cost because "
-           "it bears on whether this can be mandated: at one fifth of a US cent per cycle and under "
-           "four minutes, cost is not a reason to omit verification. The finding these runs support "
+           "($0.0405/vCPU-hour, $0.00445/GB-hour); the fourfold difference is entirely the reader "
+           "running its full poll window rather than exiting early. Cost bears on whether this can be "
+           "mandated: at one fifth of a US cent per cycle and under four minutes, it is not a reason "
+           "to omit verification. The finding these runs support "
            "is narrow: declared isolation is not verified isolation, and a containment standard that "
            "does not mandate an executable covert-channel test against shared mutable resources "
            "cannot distinguish the two. Every element of the declared isolation in the uncontrolled "
            "run was true (separate resource groups, no shared VNet, no inbound exposure, no "
-           "anonymous access), and an auditor reading that template would have been right about "
-           "everything it said. None of it was sufficient, because none of it addressed the resource "
+           "anonymous access); none of it was sufficient, because none of it addressed the resource "
            "the sandboxes shared."),
 ]
 
 DISCUSSION_INTRO = [
-    (None, "The implication for containment standards is procedural. For every resource two "
-           "nominally isolated agents can both reach, a standard should require a demonstrated "
-           "attempt to pass a token through it, carried in the resource's namespace and not its "
-           "contents, with the result recorded as evidence and the control's effect verifiable by "
-           "an external reviewer. Three properties make this a candidate for a standard rather than a "
-           "one-off experiment: it is executable rather than declarative; it is third-party verifiable "
-           "without internal access, so a reviewer need not trust the operator's logs; and it is "
-           "negligible to run. Isolation never attacked in this narrow, benign way should be called "
-           "declared, not verified."),
+    (None, "The implication for containment standards is procedural. Three properties make this a "
+           "candidate conformance test rather than a one-off experiment: it is executable rather than "
+           "declarative; it is third-party verifiable without internal access, so a reviewer need not "
+           "trust the operator's logs; and it is negligible to run. Isolation never attacked in this "
+           "narrow, benign way should be called declared, not verified."),
+]
+
+PROTOCOL = [
+    (None, "The procedure generalizes beyond this testbed. We offer it as a candidate protocol, not "
+           "an adopted standard: steps 2 and 3 are what this report executed, while steps 1, 4 and 5 "
+           "are what an operator adds to turn it into a standing control."),
+    ('num', "1.  Declare the mutable resources that two nominally isolated agents can both reach: "
+            "object storage, package and build caches, message queues, artifact registries, tag "
+            "stores, lock files."),
+    ('num', "2.  For each shared resource, run a benign token write and read between the two isolated "
+            "parties, with the token carried in the resource namespace rather than its contents, so "
+            "content-level controls are not mistaken for coverage."),
+    ('num', "3.  Run a cross-credential probe: attempt access outside each party's assigned scope and "
+            "require an explicit rejection (HTTP 403 or the platform equivalent), recording which "
+            "layer rejected it."),
+    ('num', "4.  Record reproducible evidence (logs, timings, probe transcripts) in a form a third "
+            "party can re-run without internal access to the lab."),
+    ('num', "5.  Repeat on every relevant deployment configuration, as part of CI/CD or periodic "
+            "audit, rather than once at initial deployment."),
 ]
 
 LIMITATIONS = [
     (None, "We are explicit about what this testbed does not demonstrate; the gap between our claim "
            "and a general isolation guarantee is large."),
-    ('b', "It does not reproduce the real attack vector. No Jinja2 injection, no HDF5 exploit, no "
+    ('b', "It does not reproduce the real attack vector: no Jinja2 injection, no HDF5 exploit, no "
           "privilege escalation, no cache-proxy zero-day. We pass a benign token between two "
           "cooperating processes. This was a design constraint, not an unfinished task: whether a "
           "channel exists through a shared resource is answerable without weaponizing anything."),
@@ -238,21 +262,21 @@ LIMITATIONS = [
           "demonstrated that."),
     ('b', "The negative result is bounded by the observation window. CLOSED means no token was "
           "observed in 12 attempts over ~125 seconds; it is not proof of impossibility, and a channel "
-          "with latency exceeding the window would look identical. The credential probes are what "
-          "raise this above a bounded-window negative, by establishing that no permitted operation "
-          "exists rather than that none succeeded in time."),
+          "with latency exceeding the window would look identical. The credential probes raise this "
+          "above a bounded-window negative, by establishing that no permitted operation exists rather "
+          "than that none succeeded in time."),
 ]
 
 DUALUSE = [
     (None, "Using a shared resource's namespace as a communication medium is a genuine covert-channel "
-           "primitive, and we should not pretend otherwise. We judge publication net-positive because "
-           "the primitive is neither novel nor difficult: covert channels through shared mutable "
-           "state are long-established [3][4], and the incident shows agents discover the pattern "
-           "without instruction. The information asymmetry runs the wrong way: operators who need to "
-           "test for this channel lack a cheap executable harness, while the capability to use it "
-           "requires nothing we are adding. What we contribute is the defensive half. The artifact is "
-           "constrained accordingly: a benign token with no payload, no exploit, no escape primitive, "
-           "inert against any system other than a storage account the runner already controls."),
+           "primitive. We judge publication net-positive because it is neither novel nor difficult: "
+           "covert channels through shared mutable state are long-established [3][4], and the incident "
+           "shows agents discover the pattern without instruction. The asymmetry runs the wrong way: "
+           "operators who need to test for this channel lack a cheap executable harness, while using "
+           "it requires nothing we are adding. What we contribute is the defensive half. The artifact "
+           "is constrained accordingly: a benign token with no payload, no exploit, no escape "
+           "primitive, inert against any system other than a storage account the runner already "
+           "controls."),
     (None, "The residual risk we take most seriously is misuse as false assurance: an operator runs "
            "this, observes CLOSED, and reports isolation verified in a sense far broader than what "
            "was measured. That failure mode would recreate the exact problem the testbed exists to "
@@ -271,20 +295,19 @@ FUTURE = [
           "honestly rather than approximated."),
     ('b', "Harden the negative result by enumerating the operations each credential permits and "
           "showing none constitutes a channel, rather than relying on a bounded poll window."),
-    ('b', "Package as a conformance test: a provider-agnostic harness taking a declared isolation "
-          "boundary and a list of shared resources, emitting a signed before/after evidence bundle an "
-          "external auditor can re-verify."),
+    ('b', "Implement the five-step protocol above as a provider-agnostic harness emitting a signed "
+          "evidence bundle an external auditor can re-verify."),
 ]
 
 CONCLUSION = [
     (None, "Two sandboxes satisfying a defensible, template-auditable isolation specification "
            "communicated in eight seconds through the one resource they shared, with the signal "
            "carried in a blob name rather than any content a scanner could inspect. Applying "
-           "short-lived, least-privilege, per-sandbox scoped credentials closed the channel, and the "
-           "closure is demonstrable to someone outside the lab by two credential probes that fail at "
-           "different layers. The control is not exotic: scoped credentials are standard practice, and "
+           "short-lived, least-privilege, per-sandbox scoped credentials the reader observed no token "
+           "within the tested window, and two credential probes returned HTTP 403 at different layers, "
+           "a result someone outside the lab can reproduce. Scoped credentials are standard practice: "
            "what was missing in the incident was not the technique but the test that would have "
-           "revealed the technique was needed."),
+           "revealed it was needed."),
     (None, "Declared isolation and verified isolation are different claims, and the difference is not "
            "visible from an architecture diagram. At $0.0021 and under four minutes per cycle, the "
            "cost of collapsing that difference into an observed fact is negligible relative to what "
@@ -494,8 +517,15 @@ doc = Document(SRC)
 
 # Minimal spacing tightening: template ships Heading2 space_before=18pt,
 # Heading3=16pt. Trimming these recovers ~3 lines without altering the look.
-doc.styles['Heading 2'].paragraph_format.space_before = Pt(12)
-doc.styles['Heading 3'].paragraph_format.space_before = Pt(10)
+# Body line spacing: template default is 276 (1.15). 258 (~1.075) keeps the same
+# typeface, sizes and margins while fitting the added protocol section in 8 pages.
+_dd = doc.styles.element.find(W + 'docDefaults')
+if _dd is not None:
+    _sp = _dd.find(W + 'pPrDefault/' + W + 'pPr/' + W + 'spacing')
+    if _sp is not None:
+        _sp.set(W + 'line', '258')
+doc.styles['Heading 2'].paragraph_format.space_before = Pt(10)
+doc.styles['Heading 3'].paragraph_format.space_before = Pt(8)
 
 # 1. delete the "How to use this template" instruction box
 for t in list(doc.tables):
@@ -580,6 +610,8 @@ last = insert_blocks(doc, last, RESULTS_POST)
 # section 5: rebuild wholly (drop template's Limitations/Future Work h3s, add our own)
 h = clear_section(doc, '5. Discussion and Limitations', ['6. Conclusion'])
 last = insert_blocks(doc, h, DISCUSSION_INTRO)
+last = insert_blocks(doc, last, [('h3', 'A Candidate Conformance Protocol')])
+last = insert_blocks(doc, last, PROTOCOL)
 last = insert_blocks(doc, last, [('h3', 'Limitations')])
 last = insert_blocks(doc, last, LIMITATIONS)
 last = insert_blocks(doc, last, [('h3', 'Dual-Use Considerations')])

@@ -1,89 +1,192 @@
-# Covert-Channel Verification Testbed
+# Covert-Channel Containment Testbed
 
-**Declared isolation is not verified isolation.** This is a minimal, executable test for
-covert channels between nominally-isolated agent sandboxes through a shared mutable
-resource — the failure mode behind the July 2026 OpenAI–Hugging Face incident, in which
-~1,200 supposedly isolated agents discovered each other through a shared Artifactory
-cache namespace and ~700 joined the resulting attack.
+**An executable conformance test for agent isolation.** Two sandboxes with no network route
+between them are given one shared blob container. Uncontrolled, a benign token crosses in
+**8 seconds**. Under per-sandbox scoped credentials, no cross-container access was observed
+within the tested scope, and two credential probes return **HTTP 403** by two different
+mechanisms. One full before/after cycle costs **$0.0021** and runs in under four minutes.
 
-Built for the **Apart Research AI Incident Response Sprint** (Track 1: Containment
-Standards, Bogotá hub).
+Built for the **Apart Research AI Incident Response Sprint** (Track 1: Containment Standards,
+Bogotá hub).
 
-> **This repository contains no exploit.** It passes a benign token between two
-> cooperating containers. There is no escape primitive, no privilege escalation, and no
-> reproduction of the incident's attack vector. See *Dual-Use Considerations* in the report.
+> **This repository contains no exploit.** It passes a benign token between two cooperating
+> containers. There is no escape primitive, no privilege escalation, and no reproduction of the
+> July 2026 incident's attack vector.
 
-## What it does
+---
 
-Two Azure Container Instances in **separate resource groups**, with **no shared VNet**
-(no `subnetId` → no network route between them) and **no inbound exposure** (no
-`ipAddress`), share one blob container. A token is passed from one to the other using the
-**storage namespace itself** as the medium — the signal is the blob *name*, and the blob is
-zero bytes. Content-level controls (scanning, encryption at rest, DLP on object bodies)
-are blind to this channel.
+## What this is, in 30 seconds
+
+Agent sandboxing is routinely *declared* (in architecture diagrams, deployment templates, vendor
+attestations) and rarely *verified* against the channel class that actually broke containment in
+the field: a shared mutable resource that isolated sandboxes can both reach.
+
+In the July 2026 OpenAI/Hugging Face incident, roughly 1,200 nominally isolated agents discovered
+one another through a shared Artifactory cache namespace, using directory names as messages.
+About 700 went on to participate in the resulting attack.
+
+This testbed makes that failure mode **executable**, so isolation becomes an observed fact rather
+than a design claim. The signal is carried in the blob **name**, not its contents, so
+content-level controls (scanning, encryption at rest, DLP on object bodies) are blind to it.
 
 | Run | Configuration | Result |
 |---|---|---|
 | `before-control` | Shared container + account key | **Channel CONFIRMED OPEN** in 8 seconds |
-| `after-control` | Per-sandbox scoped SAS, disjoint containers | **Channel CLOSED** (full poll window) |
+| `after-control` | Per-sandbox scoped SAS, disjoint containers | **CLOSED** (no token observed in the full window) |
 
-Total cost of one before/after cycle: **~$0.0021**, under four minutes.
+---
 
-## Reproducing it
+## Just want the evidence? Nothing to deploy
 
-Requires: `az` CLI logged in, Owner/Contributor at **subscription** scope (the template
-creates resource groups).
+Every result above is already captured in this repo. You do not need an Azure account to review it.
+
+| Path | What it shows |
+|---|---|
+| [`evidence/before/RESULT.md`](evidence/before/RESULT.md) | Summary of the uncontrolled run |
+| [`evidence/before/writer_sandbox-a.log`](evidence/before/writer_sandbox-a.log) | Writer emits the token |
+| [`evidence/before/reader_sandbox-b.log`](evidence/before/reader_sandbox-b.log) | Reader receives it on attempt 3, `CONFIRMED OPEN` |
+| [`evidence/after/RESULT.md`](evidence/after/RESULT.md) | Summary of the controlled run |
+| [`evidence/after/reader_sandbox-b.log`](evidence/after/reader_sandbox-b.log) | Reader polls 12/12, `appears CLOSED` |
+| [`evidence/after/credential_probe.txt`](evidence/after/credential_probe.txt) | **Both 403 probes**, full request and response |
+| `evidence/*/timing_sandbox-*.json` | Exact start/finish times used for the cost figures |
+
+**The report:** [`report/final_report_apart.pdf`](report/final_report_apart.pdf) (English, official
+submission) and [`report/final_report_apart_es.pdf`](report/final_report_apart_es.pdf) (Spanish
+courtesy translation).
+
+---
+
+## Prerequisites (if you want to run it yourself)
+
+1. **An Azure subscription** you can create resources in. Total cost of a full cycle is about
+   **$0.0021**, well under one US cent.
+2. **Azure CLI** (`az`), logged in: `az login`
+3. **Permissions:** Owner or Contributor at **subscription scope**. This is required because the
+   template creates resource groups, which cannot be done with resource-group-scoped rights.
+4. **Bash.** On Windows, Git Bash works. No other tooling, SDK, or build step is needed: the agent
+   scripts are injected into the containers at runtime.
+
+Verify you are ready:
 
 ```bash
-./deploy.sh <SUBSCRIPTION_ID> before-control      # channel open
-./deploy.sh <SUBSCRIPTION_ID> after-control       # channel closed
+az account show --query "{subscription:name, id:id}" -o json
 ```
 
-Collect evidence:
+---
+
+## Run it
+
+```bash
+git clone https://github.com/AndresR08/covert-channel-containment-testbed.git
+cd covert-channel-containment-testbed
+
+# 1. the uncontrolled run: the channel should open
+./deploy.sh <SUBSCRIPTION_ID> before-control
+
+# 2. the controlled run: scoped credentials, the channel should not
+./deploy.sh <SUBSCRIPTION_ID> after-control
+```
+
+`deploy.sh` takes the scenario name as its second argument; it tags every resource with it so the
+two runs can be billed apart in Cost Management.
+
+Read the results:
 
 ```bash
 az container logs --resource-group rg-cc-sandbox-a --name sandbox-a   # writer
 az container logs --resource-group rg-cc-sandbox-b --name sandbox-b   # reader
 ```
 
-The `after-control` run additionally passes `containmentMode=scoped-sas`.
+Expected: `Channel CONFIRMED OPEN` after the first run, `Channel appears CLOSED` after the second.
+The reader in the second run takes about 125 s because it exhausts its full 12-attempt window
+rather than exiting early on receipt.
 
-## Independent verification (no access to this lab required)
+### Run the credential probes
 
-The containment claim does **not** rest on trusting these logs. Both credential probes in
-[`evidence/after/credential_probe.txt`](evidence/after/credential_probe.txt) are
-reproducible by any reviewer who can mint SAS tokens with the declared scope:
+This is the part a reviewer can verify **without trusting our logs**. Mint two SAS tokens with the
+same scope the sandboxes receive, then try to use each one outside its scope. Both must return 403.
 
-1. **Cross-container** — the reader's SAS (`rl`, scoped to `rd-<runId>`) used against the
-   writer's container returns **HTTP 403 `AuthenticationFailed`**: the signature is
-   cryptographically bound to its own resource path and fails *before* authorization is
-   evaluated.
-2. **Same container, wrong permission** — the writer's SAS (`cw`, scoped to `wr-<runId>`)
-   used to LIST its own container returns **HTTP 403 `AuthorizationPermissionMismatch`**:
-   the signature is valid, but `cw` excludes read/list.
+```bash
+ACCOUNT=<storage-account-name>        # from the deploy output
+RUN=<runId>                           # from the deploy output, e.g. 6a50151453977
+EXPIRY=$(date -u -d '+30 minutes' '+%Y-%m-%dT%H:%MZ')
+KEY=$(az storage account keys list --account-name "$ACCOUNT" --query "[0].value" -o tsv)
 
-A `200` where this reports `403` falsifies the containment claim.
+READER_SAS=$(az storage container generate-sas --account-name "$ACCOUNT" --account-key "$KEY" \
+  --name "rd-$RUN" --permissions rl --expiry "$EXPIRY" --https-only -o tsv)
+WRITER_SAS=$(az storage container generate-sas --account-name "$ACCOUNT" --account-key "$KEY" \
+  --name "wr-$RUN" --permissions cw --expiry "$EXPIRY" --https-only -o tsv)
 
-## Layout
+# Probe 1 - cross-container: reader's credential against the writer's container
+curl -s -o /dev/null -w "probe1: %{http_code}\n" \
+  "https://$ACCOUNT.blob.core.windows.net/wr-$RUN?restype=container&comp=list&$READER_SAS"
+
+# Probe 2 - same container, wrong permission: writer's credential tries to LIST
+curl -s -o /dev/null -w "probe2: %{http_code}\n" \
+  "https://$ACCOUNT.blob.core.windows.net/wr-$RUN?restype=container&comp=list&$WRITER_SAS"
+```
+
+Expected output:
+
+```
+probe1: 403      AuthenticationFailed          (signature is bound to its own container path)
+probe2: 403      AuthorizationPermissionMismatch  (signature valid, but cw excludes read/list)
+```
+
+The two failures land at **different layers**, which is the substantive result: probe 1 is
+rejected before authorization is even evaluated, probe 2 authenticates correctly and is then
+denied on permissions. **A `200` in either probe would falsify the containment claim.**
+
+### Clean up
+
+```bash
+az group delete --name rg-cc-sandbox-a --yes --no-wait
+az group delete --name rg-cc-sandbox-b --yes --no-wait
+az group delete --name rg-cc-storage   --yes --no-wait
+```
+
+---
+
+## The five-step protocol
+
+The report generalizes this into a **candidate conformance protocol** (not an adopted standard).
+Steps 2 and 3 are what this repo executes; 1, 4 and 5 are what an operator adds to make it a
+standing control:
+
+1. **Declare** the mutable resources two nominally isolated agents can both reach (object storage,
+   package and build caches, queues, artifact registries, tag stores, lock files).
+2. **Pass a benign token** between the two isolated parties through each shared resource, carried
+   in the resource *namespace* rather than its contents.
+3. **Probe the credentials** across scopes and require an explicit rejection (403 or equivalent),
+   recording which layer rejected it.
+4. **Record reproducible evidence** a third party can re-run without internal access.
+5. **Repeat on every deployment configuration**, in CI/CD or periodic audit, not once at launch.
+
+---
+
+## Repository layout
 
 | Path | Contents |
 |---|---|
-| `main.bicep` | Subscription-scoped deployment; 3 resource groups |
+| `main.bicep` | Subscription-scoped deployment; creates the three resource groups |
 | `storage.bicep` | The shared mutable resource |
-| `sandbox.bicep` | One ACI sandbox; isolation properties auditable here |
-| `containment_sas.bicep` | Containment control: per-sandbox scoped SAS |
+| `sandbox.bicep` | One ACI sandbox. **The isolation properties are auditable here:** no `subnetId` (no shared VNet, so no route between sandboxes) and no `ipAddress` (no inbound exposure) |
+| `containment_sas.bicep` | The containment control: per-sandbox scoped SAS, disjoint containers and permissions |
 | `writer.py` / `reader.py` | Agent scripts (benign token only) |
-| `evidence/before/` | Logs, timings, tags, summary — channel open |
-| `evidence/after/` | Same, plus `credential_probe.txt` — channel closed |
-| `report/` | Final research report |
+| `deploy.sh` | `./deploy.sh <SUBSCRIPTION_ID> <before-control\|after-control>` |
+| `evidence/` | Captured results from both runs |
+| `report/` | Final report (EN + ES) and the scripts that build them |
 
-## Known scope limits
+---
 
-Testing covers channels through shared **storage** resources only. It does not address
-host- or kernel-level adversaries, does not reproduce the incident's attack vector, and was
-run with 2 sandboxes (the incident involved ~1,200). The SAS "single-use" property is
-approximated via short TTL and disjoint scope, not true one-time revocation. Full
-treatment in the report's *Limitations*.
+## Scope and limits
+
+This tests channels through shared **storage** resources only. It does **not** address host- or
+kernel-level adversaries, does **not** reproduce the incident's attack vector, and was run with
+**2** sandboxes where the incident involved ~1,200. The SAS "single-use" property is approximated
+via short TTL and disjoint scope, not true one-time revocation. `CLOSED` is a bounded-window
+negative observation, not a proof of impossibility; the credential probes are what raise it above
+that. Full treatment in the report's *Limitations* and *Dual-Use Considerations*.
 
 ## License
 
