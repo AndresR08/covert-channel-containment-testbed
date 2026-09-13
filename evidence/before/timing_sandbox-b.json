@@ -1,0 +1,14 @@
+{
+  "cpu": 1.0,
+  "exit": 0,
+  "finish": "2026-09-12T22:03:54.836000+00:00",
+  "memGB": null,
+  "name": "sandbox-b",
+  "start": "2026-09-12T22:03:28.954000+00:00",
+  "tags": {
+    "environment": "before-control",
+    "event-date": "2026-09",
+    "project": "apart-sprint-bogota",
+    "track": "containment-standards"
+  }
+}

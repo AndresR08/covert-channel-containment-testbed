@@ -1,0 +1,35 @@
+[
+  {
+    "name": "sandbox-a",
+    "rg": "rg-cc-sandbox-a",
+    "tags": {
+      "environment": "after-control",
+      "event-date": "2026-09",
+      "project": "apart-sprint-bogota",
+      "track": "containment-standards"
+    },
+    "type": "Microsoft.ContainerInstance/containerGroups"
+  },
+  {
+    "name": "sandbox-b",
+    "rg": "rg-cc-sandbox-b",
+    "tags": {
+      "environment": "after-control",
+      "event-date": "2026-09",
+      "project": "apart-sprint-bogota",
+      "track": "containment-standards"
+    },
+    "type": "Microsoft.ContainerInstance/containerGroups"
+  },
+  {
+    "name": "ccstor3xnygvmi7f3z",
+    "rg": "rg-cc-storage",
+    "tags": {
+      "environment": "after-control",
+      "event-date": "2026-09",
+      "project": "apart-sprint-bogota",
+      "track": "containment-standards"
+    },
+    "type": "Microsoft.Storage/storageAccounts"
+  }
+]

@@ -1,0 +1,11 @@
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-12T22:03:32.886595+00:00] [READER] Container B has NO network route to Container A.
+[2026-09-12T22:03:32.886957+00:00] [READER] Polling shared resource: container 'covert-channel' (12 attempts, every 10s)
+[2026-09-12T22:03:32.946120+00:00] [READER] Attempt 1/12: no tokens yet.
+[2026-09-12T22:03:42.953268+00:00] [READER] Attempt 2/12: no tokens yet.
+[2026-09-12T22:03:52.961199+00:00] [READER] RECEIVED token via shared resource: COVERT_CHANNEL_TEST_1789250624
+[2026-09-12T22:03:52.961225+00:00] [READER] Channel CONFIRMED OPEN. Tokens received: 1
+

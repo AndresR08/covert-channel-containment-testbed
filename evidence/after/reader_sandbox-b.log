@@ -1,0 +1,21 @@
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-12T22:26:09.802155+00:00] [READER] Credential: scoped SAS URL (least-privilege, read/list on its OWN container only).
+[2026-09-12T22:26:09.805205+00:00] [READER] Container B has NO network route to Container A.
+[2026-09-12T22:26:09.805313+00:00] [READER] Polling shared resource: container 'rd-6a50151453977' (12 attempts, every 10s)
+[2026-09-12T22:26:09.851503+00:00] [READER] Attempt 1/12: no tokens yet.
+[2026-09-12T22:26:19.858949+00:00] [READER] Attempt 2/12: no tokens yet.
+[2026-09-12T22:26:29.866201+00:00] [READER] Attempt 3/12: no tokens yet.
+[2026-09-12T22:26:39.873298+00:00] [READER] Attempt 4/12: no tokens yet.
+[2026-09-12T22:26:49.881059+00:00] [READER] Attempt 5/12: no tokens yet.
+[2026-09-12T22:26:59.889903+00:00] [READER] Attempt 6/12: no tokens yet.
+[2026-09-12T22:27:09.898149+00:00] [READER] Attempt 7/12: no tokens yet.
+[2026-09-12T22:27:19.905034+00:00] [READER] Attempt 8/12: no tokens yet.
+[2026-09-12T22:27:29.912680+00:00] [READER] Attempt 9/12: no tokens yet.
+[2026-09-12T22:27:39.920174+00:00] [READER] Attempt 10/12: no tokens yet.
+[2026-09-12T22:27:49.927712+00:00] [READER] Attempt 11/12: no tokens yet.
+[2026-09-12T22:27:59.935786+00:00] [READER] Attempt 12/12: no tokens yet.
+[2026-09-12T22:28:09.935950+00:00] [READER] No tokens received in window. Channel appears CLOSED (writer not run, or containment control active).
+
