@@ -9,8 +9,8 @@ W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 SRC = 'report/apart_template.docx'
 OUT = 'report/final_report_apart.docx'
 
-TITLE = ("Declared Isolation Is Not Verified Isolation: "
-         "An Executable Covert-Channel Test for AI Agent Containment")
+TITLE = "Declared Isolation Is Not Verified Isolation"
+SUBTITLE = "An Executable Covert-Channel Test for AI Agent Containment"
 
 REPO = "https://github.com/AndresR08/covert-channel-containment-testbed"
 
@@ -533,7 +533,9 @@ for t in list(doc.tables):
         delete_el(t._element)
         break
 
-# 2. cover: title
+# 2. cover: title + subtitle (template ships an unused "Subtitle" style;
+# use it for the shortened cover so the technical description survives in
+# smaller, gray text rather than being dropped or crammed into the title).
 cover = doc.tables[0]
 title_tc = list(list(cover._tbl.iterchildren(W + 'tr'))[0].iterchildren(W + 'tc'))[0]
 for p_el in title_tc.iterchildren(W + 'p'):
@@ -542,7 +544,17 @@ for p_el in title_tc.iterchildren(W + 'p'):
             delete_el(r)
         from docx.text.paragraph import Paragraph as _P
         _P(p_el, doc).add_run(TITLE)
+        _sub_el = copy.deepcopy(p_el)
+        for _ch in list(_sub_el):
+            if _ch.tag == W + 'r':
+                _sub_el.remove(_ch)
+        p_el.addnext(_sub_el)
+        _SubP = _P(_sub_el, doc)
+        _SubP.style = doc.styles['Subtitle']
+        _SubP.add_run(SUBTITLE)
         break
+
+doc.core_properties.title = TITLE
 
 # 3. cover: authors -> single author, delete the other 5 cells
 tr1_tc = list(list(cover._tbl.iterchildren(W + 'tr'))[1].iterchildren(W + 'tc'))[0]

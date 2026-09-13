@@ -10,8 +10,8 @@ SRC = 'report/apart_template.docx'
 OUT = 'report/final_report_apart_es.docx'
 
 # --- Spanish content (traducción de cortesía). No em-dashes anywhere. ---
-TITLE = ("Aislamiento Declarado No Es Aislamiento Verificado: Una Prueba Ejecutable "
-         "de Canal Encubierto para la Contención de Agentes de IA")
+TITLE = "Aislamiento Declarado No Es Aislamiento Verificado"
+SUBTITLE = "Una Prueba Ejecutable de Canal Encubierto para la Contención de Agentes de IA"
 
 NOTE = ("Nota: esta es una traducción de cortesía al español, preparada para el repositorio y para "
         "la comunidad de AI Safety Colombia. La versión oficial entregada a Apart Research es la "
@@ -584,7 +584,9 @@ for t in list(doc.tables):
         delete_el(t._element)
         break
 
-# 2. cover: title
+# 2. cover: title + subtitle (template ships an unused "Subtitle" style;
+# use it for the shortened cover so the technical description survives in
+# smaller, gray text rather than being dropped or crammed into the title).
 cover = doc.tables[0]
 title_tc = list(list(cover._tbl.iterchildren(W + 'tr'))[0].iterchildren(W + 'tc'))[0]
 for p_el in title_tc.iterchildren(W + 'p'):
@@ -593,7 +595,17 @@ for p_el in title_tc.iterchildren(W + 'p'):
             delete_el(r)
         from docx.text.paragraph import Paragraph as _P
         _P(p_el, doc).add_run(TITLE)
+        _sub_el = copy.deepcopy(p_el)
+        for _ch in list(_sub_el):
+            if _ch.tag == W + 'r':
+                _sub_el.remove(_ch)
+        p_el.addnext(_sub_el)
+        _SubP = _P(_sub_el, doc)
+        _SubP.style = doc.styles['Subtitle']
+        _SubP.add_run(SUBTITLE)
         break
+
+doc.core_properties.title = TITLE
 
 # 3. cover: authors -> single author, delete the other 5 cells
 tr1_tc = list(list(cover._tbl.iterchildren(W + 'tr'))[1].iterchildren(W + 'tc'))[0]
