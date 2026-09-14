@@ -1,0 +1,58 @@
+=== N=20 runId=n20: deploying ===
+deploy state=Succeeded storage=p1storwtxe6tukf6mj
+=== waiting for 21 container groups to terminate ===
+  terminated 21/21
+=== collecting logs ===
+=== cross-credential probe ===
+minting 20 writer SAS + 1 reader SAS ...
+P1 CROSS-CREDENTIAL PROBE, N=20, runId=n20
+========================================================================
+account        : p1storwtxe6tukf6mj
+pair selection : exhaustive (all ordered pairs i != j)
+total probes   : 790 in 237.3s
+
+Status counts (probe_kind:http_status -> count):
+   A_cross_list:403             380
+   B_cross_write:403            380
+   C_own_wrong_perm:403         20
+   D_reader_cross:403           10
+
+RESULT: ALL 790 PROBES DENIED. No cross-party access was observed.
+
+Probe kinds:
+  A_cross_list      writer_i SAS -> LIST writer_j container   (expect 403)
+  B_cross_write     writer_i SAS -> PUT blob in writer_j      (expect 403)
+  C_own_wrong_perm  writer_i SAS -> LIST own container        (expect 403, cw excludes l)
+  D_reader_cross    reader SAS   -> LIST writer container     (expect 403)
+
+
+=== SUMMARY N=20 ===
+{
+  "n_writers": 20,
+  "run_id": "n20",
+  "storage_account": "p1storwtxe6tukf6mj",
+  "deployment": "p1-nparty-n20-1789364570",
+  "writes_per_writer": 20,
+  "containers_terminated": 21,
+  "containers_expected": 21,
+  "writers_all_writes_ok": 20,
+  "writers_with_failures": [],
+  "total_writes_ok": 400,
+  "total_writes_failed": 0,
+  "writer_error_kinds": {},
+  "reader_result": "CLOSED",
+  "probe_total": 790,
+  "probe_all_denied": true,
+  "probe_status_counts": {
+    "A_cross_list:403": 380,
+    "B_cross_write:403": 380,
+    "C_own_wrong_perm:403": 20,
+    "D_reader_cross:403": 10
+  },
+  "probe_pair_selection": "exhaustive (all ordered pairs i != j)",
+  "aci_resource_seconds": 286.13,
+  "aci_cost_usd": 0.003573,
+  "wall_clock_s": 880.4
+}
+=== deleting container groups for this N (storage kept) ===
+done N=20

@@ -1,0 +1,418 @@
+{
+  "run_id": "n5",
+  "n_writers": 5,
+  "account": "p1storwtxe6tukf6mj",
+  "pair_selection": "exhaustive (all ordered pairs i != j)",
+  "probes": [
+    {
+      "probe": "A_cross_list",
+      "writer": 0,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 0,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 0,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 0,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 0,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 0,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 0,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-4"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 0,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-4"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 1,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 1,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 1,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 1,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 1,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 1,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 1,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-4"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 1,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-4"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 2,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 2,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 2,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 2,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 2,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 2,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 2,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-4"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 2,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-4"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 3,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 3,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 3,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 3,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 3,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 3,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 3,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-4"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 3,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-4"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 4,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 4,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 4,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 4,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 4,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 4,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 4,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 4,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "C_own_wrong_perm",
+      "writer": 0,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthorizationPermissionMismatch",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "C_own_wrong_perm",
+      "writer": 1,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthorizationPermissionMismatch",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "C_own_wrong_perm",
+      "writer": 2,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthorizationPermissionMismatch",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "C_own_wrong_perm",
+      "writer": 3,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthorizationPermissionMismatch",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "C_own_wrong_perm",
+      "writer": 4,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthorizationPermissionMismatch",
+      "target_desc": "wr-n5-4"
+    },
+    {
+      "probe": "D_reader_cross",
+      "writer": -1,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-0"
+    },
+    {
+      "probe": "D_reader_cross",
+      "writer": -1,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-1"
+    },
+    {
+      "probe": "D_reader_cross",
+      "writer": -1,
+      "target": 2,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-2"
+    },
+    {
+      "probe": "D_reader_cross",
+      "writer": -1,
+      "target": 3,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-3"
+    },
+    {
+      "probe": "D_reader_cross",
+      "writer": -1,
+      "target": 4,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n5-4"
+    }
+  ],
+  "counts": {
+    "A_cross_list:403": 20,
+    "B_cross_write:403": 20,
+    "C_own_wrong_perm:403": 5,
+    "D_reader_cross:403": 5
+  },
+  "violations": [],
+  "elapsed_s": 15.2,
+  "total_probes": 50,
+  "all_denied": true
+}

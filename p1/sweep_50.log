@@ -1,0 +1,58 @@
+=== N=50 runId=n50: deploying ===
+deploy state=Succeeded storage=p1storwtxe6tukf6mj
+=== waiting for 51 container groups to terminate ===
+  terminated 51/51
+=== collecting logs ===
+=== cross-credential probe ===
+minting 50 writer SAS + 1 reader SAS ...
+P1 CROSS-CREDENTIAL PROBE, N=50, runId=n50
+========================================================================
+account        : p1storwtxe6tukf6mj
+pair selection : deterministic ring + fixed sample: each i probes (i+1), (i+2), (i+n//2), (n-1-i), (0) excluding self, capped at 5
+total probes   : 544 in 163.4s
+
+Status counts (probe_kind:http_status -> count):
+   A_cross_list:403             242
+   B_cross_write:403            242
+   C_own_wrong_perm:403         50
+   D_reader_cross:403           10
+
+RESULT: ALL 544 PROBES DENIED. No cross-party access was observed.
+
+Probe kinds:
+  A_cross_list      writer_i SAS -> LIST writer_j container   (expect 403)
+  B_cross_write     writer_i SAS -> PUT blob in writer_j      (expect 403)
+  C_own_wrong_perm  writer_i SAS -> LIST own container        (expect 403, cw excludes l)
+  D_reader_cross    reader SAS   -> LIST writer container     (expect 403)
+
+
+=== SUMMARY N=50 ===
+{
+  "n_writers": 50,
+  "run_id": "n50",
+  "storage_account": "p1storwtxe6tukf6mj",
+  "deployment": "p1-nparty-n50-1789365550",
+  "writes_per_writer": 20,
+  "containers_terminated": 51,
+  "containers_expected": 51,
+  "writers_all_writes_ok": 50,
+  "writers_with_failures": [],
+  "total_writes_ok": 1000,
+  "total_writes_failed": 0,
+  "writer_error_kinds": {},
+  "reader_result": "CLOSED",
+  "probe_total": 544,
+  "probe_all_denied": true,
+  "probe_status_counts": {
+    "A_cross_list:403": 242,
+    "B_cross_write:403": 242,
+    "C_own_wrong_perm:403": 50,
+    "D_reader_cross:403": 10
+  },
+  "probe_pair_selection": "deterministic ring + fixed sample: each i probes (i+1), (i+2), (i+n//2), (n-1-i), (0) excluding self, capped at 5",
+  "aci_resource_seconds": 919.66,
+  "aci_cost_usd": 0.011483,
+  "wall_clock_s": 1139.8
+}
+=== deleting container groups for this N (storage kept) ===
+done N=50

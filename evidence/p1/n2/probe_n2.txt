@@ -1,0 +1,19 @@
+P1 CROSS-CREDENTIAL PROBE, N=2, runId=n2
+========================================================================
+account        : p1storwtxe6tukf6mj
+pair selection : exhaustive (all ordered pairs i != j)
+total probes   : 8 in 2.5s
+
+Status counts (probe_kind:http_status -> count):
+   A_cross_list:403             2
+   B_cross_write:403            2
+   C_own_wrong_perm:403         2
+   D_reader_cross:403           2
+
+RESULT: ALL 8 PROBES DENIED. No cross-party access was observed.
+
+Probe kinds:
+  A_cross_list      writer_i SAS -> LIST writer_j container   (expect 403)
+  B_cross_write     writer_i SAS -> PUT blob in writer_j      (expect 403)
+  C_own_wrong_perm  writer_i SAS -> LIST own container        (expect 403, cw excludes l)
+  D_reader_cross    reader SAS   -> LIST writer container     (expect 403)
