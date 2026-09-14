@@ -2,3 +2,12 @@
 report/final_report.html
 *.tmp
 .probe_*
+.src_tmp/
+
+# video production material (lives outside the repo, e.g. ~/video_kit_marlon/)
+evidence/video_kit/
+evidence/video_kit.zip
+evidence/redacted_for_video/
+
+# working notes / handoff scratch, never part of the deliverable
+NOTAS_PARA_CARLOS_*.md

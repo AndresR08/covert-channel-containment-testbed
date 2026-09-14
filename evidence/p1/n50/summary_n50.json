@@ -1,0 +1,28 @@
+{
+  "n_writers": 50,
+  "run_id": "n50",
+  "storage_account": "p1storwtxe6tukf6mj",
+  "deployment": "p1-nparty-n50-1789365550",
+  "writes_per_writer": 20,
+  "containers_terminated": 51,
+  "containers_expected": 51,
+  "writers_all_writes_ok": 50,
+  "writers_with_failures": [],
+  "total_writes_ok": 1000,
+  "total_writes_failed": 0,
+  "writer_error_kinds": {},
+  "reader_result": "CLOSED",
+  "probe_total": 544,
+  "probe_all_denied": true,
+  "probe_violations": [],
+  "probe_status_counts": {
+    "A_cross_list:403": 242,
+    "B_cross_write:403": 242,
+    "C_own_wrong_perm:403": 50,
+    "D_reader_cross:403": 10
+  },
+  "probe_pair_selection": "deterministic ring + fixed sample: each i probes (i+1), (i+2), (i+n//2), (n-1-i), (0) excluding self, capped at 5",
+  "aci_resource_seconds": 919.66,
+  "aci_cost_usd": 0.011483,
+  "wall_clock_s": 1139.8
+}

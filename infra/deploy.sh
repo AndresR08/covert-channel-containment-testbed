@@ -14,6 +14,9 @@
 #
 # Requires: az CLI logged in, and Owner/Contributor at SUBSCRIPTION scope
 # (the template creates resource groups). Default region: eastus.
+#
+# Run from inside infra/ (this directory) -- it reads the agent scripts from
+# ../agents/writer.py and ../agents/reader.py.
 
 set -euo pipefail
 
@@ -31,8 +34,8 @@ fi
 az account set --subscription "$SUBSCRIPTION_ID"
 
 # Inject the Python scripts as base64 (GNU base64 uses -w0; macOS has no -w0).
-WRITER_B64=$(base64 -w0 writer.py 2>/dev/null || base64 writer.py | tr -d '\n')
-READER_B64=$(base64 -w0 reader.py 2>/dev/null || base64 reader.py | tr -d '\n')
+WRITER_B64=$(base64 -w0 ../agents/writer.py 2>/dev/null || base64 ../agents/writer.py | tr -d '\n')
+READER_B64=$(base64 -w0 ../agents/reader.py 2>/dev/null || base64 ../agents/reader.py | tr -d '\n')
 
 az deployment sub create \
   --name "cc-testbed-${ENVIRONMENT}-$(date +%s)" \

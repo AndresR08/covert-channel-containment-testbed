@@ -1,0 +1,28 @@
+{
+  "n_writers": 2,
+  "run_id": "n2",
+  "storage_account": "p1storwtxe6tukf6mj",
+  "deployment": "p1-nparty-n2-1789363778",
+  "writes_per_writer": 20,
+  "containers_terminated": 3,
+  "containers_expected": 3,
+  "writers_all_writes_ok": 2,
+  "writers_with_failures": [],
+  "total_writes_ok": 40,
+  "total_writes_failed": 0,
+  "writer_error_kinds": {},
+  "reader_result": "CLOSED",
+  "probe_total": 8,
+  "probe_all_denied": true,
+  "probe_violations": [],
+  "probe_status_counts": {
+    "A_cross_list:403": 2,
+    "B_cross_write:403": 2,
+    "C_own_wrong_perm:403": 2,
+    "D_reader_cross:403": 2
+  },
+  "probe_pair_selection": "exhaustive (all ordered pairs i != j)",
+  "aci_resource_seconds": 146.0,
+  "aci_cost_usd": 0.001823,
+  "wall_clock_s": 385.1
+}

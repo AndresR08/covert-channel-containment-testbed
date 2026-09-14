@@ -5,6 +5,8 @@ between them are given one shared blob container. Uncontrolled, a benign token c
 **8 seconds**. Under per-sandbox scoped credentials, no cross-container access was observed
 within the tested scope, and two credential probes return **HTTP 403** by two different
 mechanisms. One full before/after cycle costs **$0.0021** and runs in under four minutes.
+Repeated at 2, 5, 20 and 50 concurrent parties (see [P1](#p1-does-it-hold-at-scale) below),
+the same result held at every scale.
 
 Built for the **Apart Research AI Incident Response Sprint** (Track 1: Containment Standards,
 Bogotá hub).
@@ -38,7 +40,7 @@ content-level controls (scanning, encryption at rest, DLP on object bodies) are 
 
 ## Just want the evidence? Nothing to deploy
 
-Every result above is already captured in this repo. You do not need an Azure account to review it.
+Every result below is already captured in this repo. You do not need an Azure account to review it.
 
 | Path | What it shows |
 |---|---|
@@ -48,11 +50,18 @@ Every result above is already captured in this repo. You do not need an Azure ac
 | [`evidence/after/RESULT.md`](evidence/after/RESULT.md) | Summary of the controlled run |
 | [`evidence/after/reader_sandbox-b.log`](evidence/after/reader_sandbox-b.log) | Reader polls 12/12, `appears CLOSED` |
 | [`evidence/after/credential_probe.txt`](evidence/after/credential_probe.txt) | **Both 403 probes**, full request and response |
+| [`evidence/p1/SWEEP_SUMMARY.json`](evidence/p1/SWEEP_SUMMARY.json) | The n-party sweep, aggregated across N = 2, 5, 20, 50 |
 | `evidence/*/timing_sandbox-*.json` | Exact start/finish times used for the cost figures |
 
-**The report:** [`report/final_report_apart.pdf`](report/final_report_apart.pdf) (English, official
-submission) and [`report/final_report_apart_es.pdf`](report/final_report_apart_es.pdf) (Spanish
-courtesy translation).
+> Resource identifiers inside `evidence/p1/` (storage account name, deployment names) refer to
+> test infrastructure that was torn down immediately after the run. No credential or access tied
+> to those names is still live.
+
+**The report:** [`report/Informe_A_v0.4_dos_capas.pdf`](report/Informe_A_v0.4_dos_capas.pdf)
+(English, primary deliverable, co-authored, includes the fourteen-control minimum containment
+standard). [`report/final_report_apart.pdf`](report/final_report_apart.pdf) is the individual
+draft this was built from, kept for reference; its Spanish courtesy translation is
+[`report/final_report_apart_es.pdf`](report/final_report_apart_es.pdf).
 
 ---
 
@@ -78,7 +87,7 @@ az account show --query "{subscription:name, id:id}" -o json
 
 ```bash
 git clone https://github.com/AndresR08/covert-channel-containment-testbed.git
-cd covert-channel-containment-testbed
+cd covert-channel-containment-testbed/infra
 
 # 1. the uncontrolled run: the channel should open
 ./deploy.sh <SUBSCRIPTION_ID> before-control
@@ -88,7 +97,7 @@ cd covert-channel-containment-testbed
 ```
 
 `deploy.sh` takes the scenario name as its second argument; it tags every resource with it so the
-two runs can be billed apart in Cost Management.
+two runs can be billed apart in Cost Management. It reads the agent scripts from `../agents/`.
 
 Read the results:
 
@@ -147,6 +156,28 @@ az group delete --name rg-cc-storage   --yes --no-wait
 
 ---
 
+## P1: does it hold at scale?
+
+The two-sandbox result above only tests the smallest possible case. `p1/` repeats the identical
+scoped-SAS control with **N concurrent writers** (2, 5, 20, 50) competing for the same storage
+account, each holding one SAS bound to its own container, plus one reader and an out-of-band
+credential probe against every party's scope.
+
+| N | Writes (ok / failed) | Reader | Probes | Pair selection | All denied |
+|---|---|---|---|---|---|
+| 2 | 40 / 0 | CLOSED | 8 | exhaustive | yes |
+| 5 | 100 / 0 | CLOSED | 50 | exhaustive | yes |
+| 20 | 400 / 0 | CLOSED | 790 | exhaustive | yes |
+| 50 | 1,000 / 0 | CLOSED | 544 | sampled (ring + fixed sample) | yes |
+
+**1,392 credential probes total, all denied. 1,540 writes, 0 failed.** Contention was real, not
+absent: worst-writer p95 write latency grew roughly tenfold from N=2 to N=50 (65 ms to 676 ms),
+while the credential boundary produced the identical result at every scale. Full evidence in
+[`evidence/p1/`](evidence/p1/); tooling in [`p1/`](p1/) (`./deploy_p1.sh` or `run_n.py` for a
+single end-to-end N).
+
+---
+
 ## The five-step protocol
 
 The report generalizes this into a **candidate conformance protocol** (not an adopted standard).
@@ -160,7 +191,8 @@ standing control:
 3. **Probe the credentials** across scopes and require an explicit rejection (403 or equivalent),
    recording which layer rejected it.
 4. **Record reproducible evidence** a third party can re-run without internal access.
-5. **Repeat on every deployment configuration**, in CI/CD or periodic audit, not once at launch.
+5. **Repeat on every deployment configuration**, in CI/CD or periodic audit, not once at launch,
+   and at more than one scale, see [P1](#p1-does-it-hold-at-scale).
 
 ---
 
@@ -168,25 +200,33 @@ standing control:
 
 | Path | Contents |
 |---|---|
-| `main.bicep` | Subscription-scoped deployment; creates the three resource groups |
-| `storage.bicep` | The shared mutable resource |
-| `sandbox.bicep` | One ACI sandbox. **The isolation properties are auditable here:** no `subnetId` (no shared VNet, so no route between sandboxes) and no `ipAddress` (no inbound exposure) |
-| `containment_sas.bicep` | The containment control: per-sandbox scoped SAS, disjoint containers and permissions |
-| `writer.py` / `reader.py` | Agent scripts (benign token only) |
-| `deploy.sh` | `./deploy.sh <SUBSCRIPTION_ID> <before-control\|after-control>` |
-| `evidence/` | Captured results from both runs |
-| `report/` | Final report (EN + ES) and the scripts that build them |
+| `infra/main.bicep` | Subscription-scoped deployment; creates the three resource groups |
+| `infra/storage.bicep` | The shared mutable resource |
+| `infra/sandbox.bicep` | One ACI sandbox. **The isolation properties are auditable here:** no `subnetId` (no shared VNet, so no route between sandboxes) and no `ipAddress` (no inbound exposure) |
+| `infra/containment_sas.bicep` | The containment control: per-sandbox scoped SAS, disjoint containers and permissions |
+| `infra/deploy.sh` | `./deploy.sh <SUBSCRIPTION_ID> <before-control\|after-control>` |
+| `agents/writer.py` / `agents/reader.py` | Agent scripts (benign token only) |
+| `p1/` | The n-party sweep: its own Bicep, agent scripts, credential-probe harness, and orchestrator (`run_n.py`) |
+| `evidence/before/`, `evidence/after/` | Captured results from the two-sandbox before/after runs |
+| `evidence/p1/` | Captured results from the n-party sweep (N = 2, 5, 20, 50) |
+| `report/` | Final reports (primary + individual draft, EN + ES) and the scripts that build them |
+
+`d1d2/` (an exploratory probe of two further controls, ambient identity and credential-boundary
+scope) exists only on the `feature/d1-d2` branch. It is not merged into `main` and not part of the
+report: the result is real but the work is a single overnight run, pending review before it is
+treated as evidence on the same footing as S1 or P1.
 
 ---
 
 ## Scope and limits
 
 This tests channels through shared **storage** resources only. It does **not** address host- or
-kernel-level adversaries, does **not** reproduce the incident's attack vector, and was run with
-**2** sandboxes where the incident involved ~1,200. The SAS "single-use" property is approximated
-via short TTL and disjoint scope, not true one-time revocation. `CLOSED` is a bounded-window
-negative observation, not a proof of impossibility; the credential probes are what raise it above
-that. Full treatment in the report's *Limitations* and *Dual-Use Considerations*.
+kernel-level adversaries, does **not** reproduce the incident's attack vector, and the two-sandbox
+result was run with **2** sandboxes where the incident involved ~1,200 (P1 extends this to 50; the
+gap to ~1,200 remains). The SAS "single-use" property is approximated via short TTL and disjoint
+scope, not true one-time revocation. `CLOSED` is a bounded-window negative observation, not a
+proof of impossibility; the credential probes are what raise it above that. Full treatment in the
+report's *Limitations* and *Dual-Use Considerations*.
 
 ## License
 

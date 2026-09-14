@@ -1,0 +1,304 @@
+######## p1-wn20-0 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:46:10.326596+00:00] [WRITER-0] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:46:10.329911+00:00] [WRITER-0] N=20 writers in this run; this is writer index 0
+[2026-09-14T05:46:10.330188+00:00] [WRITER-0] Target own container: wr-n20-0
+[2026-09-14T05:46:10.330351+00:00] [WRITER-0] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:46:10.597752+00:00] [WRITER-0] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.27
+[2026-09-14T05:46:10.598201+00:00] [WRITER-0] RESULT write_ms_median=6.9 write_ms_p95=114.1
+[2026-09-14T05:46:10.598359+00:00] [WRITER-0] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:46:10.598496+00:00] [WRITER-0] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-1 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:45:15.457824+00:00] [WRITER-1] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:45:15.463519+00:00] [WRITER-1] N=20 writers in this run; this is writer index 1
+[2026-09-14T05:45:15.463587+00:00] [WRITER-1] Target own container: wr-n20-1
+[2026-09-14T05:45:15.463765+00:00] [WRITER-1] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:45:15.674434+00:00] [WRITER-1] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.21
+[2026-09-14T05:45:15.674535+00:00] [WRITER-1] RESULT write_ms_median=7.7 write_ms_p95=54.1
+[2026-09-14T05:45:15.674552+00:00] [WRITER-1] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:45:15.674653+00:00] [WRITER-1] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-2 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:49:53.452854+00:00] [WRITER-2] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:49:53.457510+00:00] [WRITER-2] N=20 writers in this run; this is writer index 2
+[2026-09-14T05:49:53.457621+00:00] [WRITER-2] Target own container: wr-n20-2
+[2026-09-14T05:49:53.457979+00:00] [WRITER-2] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:49:53.703586+00:00] [WRITER-2] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.25
+[2026-09-14T05:49:53.704038+00:00] [WRITER-2] RESULT write_ms_median=8.5 write_ms_p95=80.1
+[2026-09-14T05:49:53.704100+00:00] [WRITER-2] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:49:53.704316+00:00] [WRITER-2] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-3 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:44:49.897479+00:00] [WRITER-3] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:44:49.900452+00:00] [WRITER-3] N=20 writers in this run; this is writer index 3
+[2026-09-14T05:44:49.900549+00:00] [WRITER-3] Target own container: wr-n20-3
+[2026-09-14T05:44:49.900860+00:00] [WRITER-3] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:44:50.097987+00:00] [WRITER-3] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.20
+[2026-09-14T05:44:50.098084+00:00] [WRITER-3] RESULT write_ms_median=7.1 write_ms_p95=42.5
+[2026-09-14T05:44:50.098103+00:00] [WRITER-3] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:44:50.098114+00:00] [WRITER-3] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-4 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:45:12.149708+00:00] [WRITER-4] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:45:12.152224+00:00] [WRITER-4] N=20 writers in this run; this is writer index 4
+[2026-09-14T05:45:12.152290+00:00] [WRITER-4] Target own container: wr-n20-4
+[2026-09-14T05:45:12.152308+00:00] [WRITER-4] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:45:12.400586+00:00] [WRITER-4] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.25
+[2026-09-14T05:45:12.400765+00:00] [WRITER-4] RESULT write_ms_median=7.7 write_ms_p95=57.2
+[2026-09-14T05:45:12.401274+00:00] [WRITER-4] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:45:12.401362+00:00] [WRITER-4] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-5 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:45:09.633965+00:00] [WRITER-5] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:45:09.638749+00:00] [WRITER-5] N=20 writers in this run; this is writer index 5
+[2026-09-14T05:45:09.638979+00:00] [WRITER-5] Target own container: wr-n20-5
+[2026-09-14T05:45:09.639252+00:00] [WRITER-5] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:45:09.868958+00:00] [WRITER-5] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.23
+[2026-09-14T05:45:09.869059+00:00] [WRITER-5] RESULT write_ms_median=8.9 write_ms_p95=60.7
+[2026-09-14T05:45:09.869077+00:00] [WRITER-5] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:45:09.869117+00:00] [WRITER-5] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-6 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:45:07.110747+00:00] [WRITER-6] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:45:07.114189+00:00] [WRITER-6] N=20 writers in this run; this is writer index 6
+[2026-09-14T05:45:07.114264+00:00] [WRITER-6] Target own container: wr-n20-6
+[2026-09-14T05:45:07.114282+00:00] [WRITER-6] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:45:07.520556+00:00] [WRITER-6] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.41
+[2026-09-14T05:45:07.520661+00:00] [WRITER-6] RESULT write_ms_median=7.6 write_ms_p95=253.0
+[2026-09-14T05:45:07.520681+00:00] [WRITER-6] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:45:07.520692+00:00] [WRITER-6] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-7 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:44:41.424427+00:00] [WRITER-7] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:44:41.427226+00:00] [WRITER-7] N=20 writers in this run; this is writer index 7
+[2026-09-14T05:44:41.427332+00:00] [WRITER-7] Target own container: wr-n20-7
+[2026-09-14T05:44:41.427441+00:00] [WRITER-7] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:44:41.593167+00:00] [WRITER-7] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.17
+[2026-09-14T05:44:41.593293+00:00] [WRITER-7] RESULT write_ms_median=6.2 write_ms_p95=40.6
+[2026-09-14T05:44:41.593528+00:00] [WRITER-7] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:44:41.593706+00:00] [WRITER-7] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-8 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:46:29.236177+00:00] [WRITER-8] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:46:29.241115+00:00] [WRITER-8] N=20 writers in this run; this is writer index 8
+[2026-09-14T05:46:29.241176+00:00] [WRITER-8] Target own container: wr-n20-8
+[2026-09-14T05:46:29.241193+00:00] [WRITER-8] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:46:29.428600+00:00] [WRITER-8] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.19
+[2026-09-14T05:46:29.428696+00:00] [WRITER-8] RESULT write_ms_median=6.8 write_ms_p95=47.4
+[2026-09-14T05:46:29.428714+00:00] [WRITER-8] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:46:29.429407+00:00] [WRITER-8] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-9 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:45:10.695685+00:00] [WRITER-9] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:45:10.699814+00:00] [WRITER-9] N=20 writers in this run; this is writer index 9
+[2026-09-14T05:45:10.699963+00:00] [WRITER-9] Target own container: wr-n20-9
+[2026-09-14T05:45:10.700010+00:00] [WRITER-9] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:45:10.889166+00:00] [WRITER-9] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.19
+[2026-09-14T05:45:10.889308+00:00] [WRITER-9] RESULT write_ms_median=7.2 write_ms_p95=48.2
+[2026-09-14T05:45:10.889452+00:00] [WRITER-9] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:45:10.889592+00:00] [WRITER-9] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-10 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:46:29.442230+00:00] [WRITER-10] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:46:29.446145+00:00] [WRITER-10] N=20 writers in this run; this is writer index 10
+[2026-09-14T05:46:29.446319+00:00] [WRITER-10] Target own container: wr-n20-10
+[2026-09-14T05:46:29.446382+00:00] [WRITER-10] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:46:29.650638+00:00] [WRITER-10] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.20
+[2026-09-14T05:46:29.650750+00:00] [WRITER-10] RESULT write_ms_median=7.3 write_ms_p95=52.1
+[2026-09-14T05:46:29.650768+00:00] [WRITER-10] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:46:29.650780+00:00] [WRITER-10] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-11 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:44:59.416690+00:00] [WRITER-11] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:44:59.420596+00:00] [WRITER-11] N=20 writers in this run; this is writer index 11
+[2026-09-14T05:44:59.420772+00:00] [WRITER-11] Target own container: wr-n20-11
+[2026-09-14T05:44:59.420990+00:00] [WRITER-11] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:44:59.660865+00:00] [WRITER-11] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.24
+[2026-09-14T05:44:59.660974+00:00] [WRITER-11] RESULT write_ms_median=7.8 write_ms_p95=63.7
+[2026-09-14T05:44:59.660992+00:00] [WRITER-11] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:44:59.661003+00:00] [WRITER-11] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-12 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:44:43.603369+00:00] [WRITER-12] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:44:43.605926+00:00] [WRITER-12] N=20 writers in this run; this is writer index 12
+[2026-09-14T05:44:43.606009+00:00] [WRITER-12] Target own container: wr-n20-12
+[2026-09-14T05:44:43.606364+00:00] [WRITER-12] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:44:43.842865+00:00] [WRITER-12] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.24
+[2026-09-14T05:44:43.842948+00:00] [WRITER-12] RESULT write_ms_median=7.4 write_ms_p95=47.8
+[2026-09-14T05:44:43.843113+00:00] [WRITER-12] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:44:43.843130+00:00] [WRITER-12] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-13 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:44:45.796135+00:00] [WRITER-13] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:44:45.805192+00:00] [WRITER-13] N=20 writers in this run; this is writer index 13
+[2026-09-14T05:44:45.805258+00:00] [WRITER-13] Target own container: wr-n20-13
+[2026-09-14T05:44:45.805279+00:00] [WRITER-13] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:44:46.030698+00:00] [WRITER-13] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.23
+[2026-09-14T05:44:46.030818+00:00] [WRITER-13] RESULT write_ms_median=7.8 write_ms_p95=51.4
+[2026-09-14T05:44:46.030843+00:00] [WRITER-13] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:44:46.030888+00:00] [WRITER-13] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-14 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:45:10.427073+00:00] [WRITER-14] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:45:10.432528+00:00] [WRITER-14] N=20 writers in this run; this is writer index 14
+[2026-09-14T05:45:10.432672+00:00] [WRITER-14] Target own container: wr-n20-14
+[2026-09-14T05:45:10.432958+00:00] [WRITER-14] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:45:10.630504+00:00] [WRITER-14] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.20
+[2026-09-14T05:45:10.630619+00:00] [WRITER-14] RESULT write_ms_median=6.7 write_ms_p95=39.0
+[2026-09-14T05:45:10.630892+00:00] [WRITER-14] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:45:10.631028+00:00] [WRITER-14] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-15 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:45:06.149014+00:00] [WRITER-15] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:45:06.155363+00:00] [WRITER-15] N=20 writers in this run; this is writer index 15
+[2026-09-14T05:45:06.155506+00:00] [WRITER-15] Target own container: wr-n20-15
+[2026-09-14T05:45:06.155534+00:00] [WRITER-15] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:45:06.370530+00:00] [WRITER-15] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.21
+[2026-09-14T05:45:06.370627+00:00] [WRITER-15] RESULT write_ms_median=8.3 write_ms_p95=47.7
+[2026-09-14T05:45:06.370695+00:00] [WRITER-15] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:45:06.370711+00:00] [WRITER-15] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-16 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:44:46.312361+00:00] [WRITER-16] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:44:46.315390+00:00] [WRITER-16] N=20 writers in this run; this is writer index 16
+[2026-09-14T05:44:46.315450+00:00] [WRITER-16] Target own container: wr-n20-16
+[2026-09-14T05:44:46.315472+00:00] [WRITER-16] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:44:46.517583+00:00] [WRITER-16] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.20
+[2026-09-14T05:44:46.517710+00:00] [WRITER-16] RESULT write_ms_median=7.0 write_ms_p95=44.7
+[2026-09-14T05:44:46.517732+00:00] [WRITER-16] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:44:46.517974+00:00] [WRITER-16] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-17 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:45:16.408768+00:00] [WRITER-17] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:45:16.412943+00:00] [WRITER-17] N=20 writers in this run; this is writer index 17
+[2026-09-14T05:45:16.413048+00:00] [WRITER-17] Target own container: wr-n20-17
+[2026-09-14T05:45:16.413277+00:00] [WRITER-17] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:45:16.648083+00:00] [WRITER-17] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.23
+[2026-09-14T05:45:16.648181+00:00] [WRITER-17] RESULT write_ms_median=7.7 write_ms_p95=72.1
+[2026-09-14T05:45:16.648200+00:00] [WRITER-17] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:45:16.648210+00:00] [WRITER-17] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-18 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:44:58.646403+00:00] [WRITER-18] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:44:58.649458+00:00] [WRITER-18] N=20 writers in this run; this is writer index 18
+[2026-09-14T05:44:58.649513+00:00] [WRITER-18] Target own container: wr-n20-18
+[2026-09-14T05:44:58.649527+00:00] [WRITER-18] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:44:58.849807+00:00] [WRITER-18] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.20
+[2026-09-14T05:44:58.849907+00:00] [WRITER-18] RESULT write_ms_median=6.4 write_ms_p95=42.2
+[2026-09-14T05:44:58.849921+00:00] [WRITER-18] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:44:58.849930+00:00] [WRITER-18] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn20-19 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:44:53.619511+00:00] [WRITER-19] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:44:53.622889+00:00] [WRITER-19] N=20 writers in this run; this is writer index 19
+[2026-09-14T05:44:53.622993+00:00] [WRITER-19] Target own container: wr-n20-19
+[2026-09-14T05:44:53.623008+00:00] [WRITER-19] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:44:53.865319+00:00] [WRITER-19] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.24
+[2026-09-14T05:44:53.865462+00:00] [WRITER-19] RESULT write_ms_median=9.1 write_ms_p95=52.9
+[2026-09-14T05:44:53.865477+00:00] [WRITER-19] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:44:53.865488+00:00] [WRITER-19] Done. This writer never attempted to reach another writer's container.
+
+######## p1-rn20 (rg-p1-reader) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:44:54.626252+00:00] [READER] Credential: scoped SAS URL (read/list on its OWN container only).
+[2026-09-14T05:44:54.632240+00:00] [READER] N=20 writers are running concurrently in this run.
+[2026-09-14T05:44:54.632461+00:00] [READER] Reader has NO network route to any writer sandbox.
+[2026-09-14T05:44:54.632625+00:00] [READER] Polling own container 'rd-n20' (12 attempts, every 10s)
+[2026-09-14T05:44:54.673216+00:00] [READER] Attempt 1/12: no tokens yet.
+[2026-09-14T05:45:04.679788+00:00] [READER] Attempt 2/12: no tokens yet.
+[2026-09-14T05:45:14.686127+00:00] [READER] Attempt 3/12: no tokens yet.
+[2026-09-14T05:45:24.693172+00:00] [READER] Attempt 4/12: no tokens yet.
+[2026-09-14T05:45:34.699930+00:00] [READER] Attempt 5/12: no tokens yet.
+[2026-09-14T05:45:44.705417+00:00] [READER] Attempt 6/12: no tokens yet.
+[2026-09-14T05:45:54.711891+00:00] [READER] Attempt 7/12: no tokens yet.
+[2026-09-14T05:46:04.717879+00:00] [READER] Attempt 8/12: no tokens yet.
+[2026-09-14T05:46:14.724018+00:00] [READER] Attempt 9/12: no tokens yet.
+[2026-09-14T05:46:24.740285+00:00] [READER] Attempt 10/12: no tokens yet.
+[2026-09-14T05:46:34.751762+00:00] [READER] Attempt 11/12: no tokens yet.
+[2026-09-14T05:46:44.757637+00:00] [READER] Attempt 12/12: no tokens yet.
+[2026-09-14T05:46:54.757893+00:00] [READER] No tokens received in window.
+[2026-09-14T05:46:54.757968+00:00] [READER] RESULT channel=CLOSED tokens_received=0 n_writers=20
+

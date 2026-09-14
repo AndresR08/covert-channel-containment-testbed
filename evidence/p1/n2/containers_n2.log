@@ -1,0 +1,52 @@
+######## p1-wn2-0 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:31:43.177053+00:00] [WRITER-0] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:31:43.183537+00:00] [WRITER-0] N=2 writers in this run; this is writer index 0
+[2026-09-14T05:31:43.183860+00:00] [WRITER-0] Target own container: wr-n2-0
+[2026-09-14T05:31:43.183949+00:00] [WRITER-0] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:31:43.381201+00:00] [WRITER-0] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.20
+[2026-09-14T05:31:43.381297+00:00] [WRITER-0] RESULT write_ms_median=6.9 write_ms_p95=58.9
+[2026-09-14T05:31:43.381315+00:00] [WRITER-0] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:31:43.381326+00:00] [WRITER-0] Done. This writer never attempted to reach another writer's container.
+
+######## p1-wn2-1 (rg-p1-writers) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:31:28.698715+00:00] [WRITER-1] Credential: scoped SAS URL (create+write only, own container).
+[2026-09-14T05:31:28.705605+00:00] [WRITER-1] N=2 writers in this run; this is writer index 1
+[2026-09-14T05:31:28.705679+00:00] [WRITER-1] Target own container: wr-n2-1
+[2026-09-14T05:31:28.705697+00:00] [WRITER-1] Writing 20 zero-byte token blobs (names carry the signal).
+[2026-09-14T05:31:28.918535+00:00] [WRITER-1] RESULT writes_ok=20 writes_failed=0 elapsed_s=0.21
+[2026-09-14T05:31:28.918661+00:00] [WRITER-1] RESULT write_ms_median=7.5 write_ms_p95=65.4
+[2026-09-14T05:31:28.918896+00:00] [WRITER-1] RESULT error_kinds={} (no write errors)
+[2026-09-14T05:31:28.918975+00:00] [WRITER-1] Done. This writer never attempted to reach another writer's container.
+
+######## p1-rn2 (rg-p1-reader) ########
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+[2026-09-14T05:32:56.840020+00:00] [READER] Credential: scoped SAS URL (read/list on its OWN container only).
+[2026-09-14T05:32:56.846859+00:00] [READER] N=2 writers are running concurrently in this run.
+[2026-09-14T05:32:56.847184+00:00] [READER] Reader has NO network route to any writer sandbox.
+[2026-09-14T05:32:56.847236+00:00] [READER] Polling own container 'rd-n2' (12 attempts, every 10s)
+[2026-09-14T05:32:56.891842+00:00] [READER] Attempt 1/12: no tokens yet.
+[2026-09-14T05:33:06.897465+00:00] [READER] Attempt 2/12: no tokens yet.
+[2026-09-14T05:33:16.907413+00:00] [READER] Attempt 3/12: no tokens yet.
+[2026-09-14T05:33:26.913299+00:00] [READER] Attempt 4/12: no tokens yet.
+[2026-09-14T05:33:36.919477+00:00] [READER] Attempt 5/12: no tokens yet.
+[2026-09-14T05:33:46.924951+00:00] [READER] Attempt 6/12: no tokens yet.
+[2026-09-14T05:33:56.930853+00:00] [READER] Attempt 7/12: no tokens yet.
+[2026-09-14T05:34:06.936216+00:00] [READER] Attempt 8/12: no tokens yet.
+[2026-09-14T05:34:16.941813+00:00] [READER] Attempt 9/12: no tokens yet.
+[2026-09-14T05:34:26.948071+00:00] [READER] Attempt 10/12: no tokens yet.
+[2026-09-14T05:34:36.984063+00:00] [READER] Attempt 11/12: no tokens yet.
+[2026-09-14T05:34:47.009865+00:00] [READER] Attempt 12/12: no tokens yet.
+[2026-09-14T05:34:57.012578+00:00] [READER] No tokens received in window.
+[2026-09-14T05:34:57.012824+00:00] [READER] RESULT channel=CLOSED tokens_received=0 n_writers=2
+

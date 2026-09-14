@@ -1,0 +1,82 @@
+{
+  "run_id": "n2",
+  "n_writers": 2,
+  "account": "p1storwtxe6tukf6mj",
+  "pair_selection": "exhaustive (all ordered pairs i != j)",
+  "probes": [
+    {
+      "probe": "A_cross_list",
+      "writer": 0,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n2-1"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 0,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n2-1"
+    },
+    {
+      "probe": "A_cross_list",
+      "writer": 1,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n2-0"
+    },
+    {
+      "probe": "B_cross_write",
+      "writer": 1,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n2-0"
+    },
+    {
+      "probe": "C_own_wrong_perm",
+      "writer": 0,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthorizationPermissionMismatch",
+      "target_desc": "wr-n2-0"
+    },
+    {
+      "probe": "C_own_wrong_perm",
+      "writer": 1,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthorizationPermissionMismatch",
+      "target_desc": "wr-n2-1"
+    },
+    {
+      "probe": "D_reader_cross",
+      "writer": -1,
+      "target": 0,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n2-0"
+    },
+    {
+      "probe": "D_reader_cross",
+      "writer": -1,
+      "target": 1,
+      "status": 403,
+      "azure_code": "AuthenticationFailed",
+      "target_desc": "wr-n2-1"
+    }
+  ],
+  "counts": {
+    "A_cross_list:403": 2,
+    "B_cross_write:403": 2,
+    "C_own_wrong_perm:403": 2,
+    "D_reader_cross:403": 2
+  },
+  "violations": [],
+  "elapsed_s": 2.5,
+  "total_probes": 8,
+  "all_denied": true
+}
